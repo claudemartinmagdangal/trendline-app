@@ -1,0 +1,41 @@
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <property name="filePattern">${date:yyyy-MM-dd}</property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ABSOLUTE} [%t] %-5p %c{1} - %msg%n"/>
+        </Console>
+        &lt;!&ndash; Async Loggers will auto-flush in batches, so switch off immediateFlush. &ndash;&gt;
+        <RandomAccessFile name="RandomAccessFile" fileName="log/admin${filePattern}.log" immediateFlush="true"
+                          append="true">
+            <PatternLayout>
+                <Pattern>%d{ABSOLUTE} [%t] %-5p %c{1} - %msg%n</Pattern>
+            </PatternLayout>
+            &lt;!&ndash; <Policies>
+                  <SizeBasedTriggeringPolicy size="10MB" />
+                <TimeBasedTriggeringPolicy interval="1"/>
+             </Policies>
+             <DefaultRolloverStrategy max="5"/> &ndash;&gt;
+        </RandomAccessFile>
+    </Appenders>
+
+    <category name="org.apache.activemq">
+        <priority value="WARN"/>
+    </category>
+
+    <category name="com.algo.transport">
+        <priority value="INFO"/>
+    </category>
+
+    <Loggers>
+        <Root level="info" includeLocation="true">
+            <AppenderRef ref="RandomAccessFile"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+
+
+</Configuration>-->

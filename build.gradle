@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+application {
+    mainClassName = 'jclass.chart.Main'
+}
+
+javafx {
+    version = "11"
+    modules = ['javafx.controls', 'javafx.graphics', 'javafx.base']
+}
+
+group 'jclass'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.0'
+    implementation 'jfree:jfreechart:1.0.13'
+    implementation 'jfree:jcommon:1.0.16'
+    implementation 'org.jfree:fxgraphics2d:1.8'
+    implementation 'org.jfree:jcommon:1.0.24'
+    implementation 'in.kncsolutions.dhelm.indicators:dhelm-indicators:1.0.0'
+    implementation 'in.kncsolutions.dhelm.exceptions:dhelm-exceptions:1.0.3'
+    implementation 'in.kncsolutions.dhelm.mathcal:dhelm-mathcal:1.0.3'
+    implementation 'org.apache.logging.log4j:log4j-api:2.11.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.11.0'
+    implementation 'net.sf.py4j:py4j:0.8.1'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.11.0'
+    implementation 'log4j:log4j:1.2.17'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
+    implementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.58.0'
+    implementation group: 'org.json', name: 'json', version: '20211205'
+
+
+    // https://mvnrepository.com/artifact/org.dom4j/dom4j
+    //implementation group: 'org.dom4j', name: 'dom4j', version: '1.6.1'
+
+// https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '3.9'
+
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas
+    implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
+
+// https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans
+    implementation group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '2.3.0-NODEP'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+//    implementation project(':yahoofinance-api')
+    // https://mvnrepository.com/artifact/com.yahoofinance-api/YahooFinanceAPI
+    implementation group: 'com.yahoofinance-api', name: 'YahooFinanceAPI', version: '3.15.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+//    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'jclass.chart.Main'
+        )
+    }
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}

@@ -1,0 +1,19 @@
+CLNN, DPRO, SGAM, QRTEP, ENVB, GBNH, GECCM, SGAMU, VMAC => has null in csv
+    => FileNotFoundException while trying to read the file (file never gets created), and NullPointerException while loading form API
+
+ENJYW => json doesn't have currency field
+OFSSI, FDUSG, HLMNW, MYPSW => has neither longName nor shortName in json
+    => Unexpected EOFException while filling stock metadata from file
+
+BCYPU, BPYPM, PTRAW => first trade date is wrong
+    => FileNotFoundException while requesting the API (In reality the api responds with a 404 (Not Found) error)
+
+MCAD, MCADU => json is empty
+
+
+CMPX => no quotes data
+
+Stoped just before ODT
+
+bad:
+BCYP, NCSM, DTST, HTGM, DLPN, GTBP

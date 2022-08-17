@@ -1,0 +1,18 @@
+ID
+Symbol
+Company
+Industry
+UpTrendCount
+DownTrendCount
+%ChangeUpTrend
+%ChangeDownTrend
+UpTrendDistances
+Up%SlopeTrendDistance
+TotalUpTrendDistance
+DownTrendDistances
+Down%SlopeTrendDistance
+TotalDownTrendDistance
+Volume/30
+Insider Trading
+Price
+News Story
