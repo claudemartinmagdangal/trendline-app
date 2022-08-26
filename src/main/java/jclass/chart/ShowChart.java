@@ -6,14 +6,14 @@ import jclass.util.OHLCCandleStickTrendUtil;
 import jclass.util.Utils;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.*;
-
+import org.jfree.chart.axis.AxisLocation;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.LogarithmicAxis;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.CandlestickRenderer;
 import org.jfree.chart.renderer.xy.SamplingXYLineRenderer;
-
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.data.Range;
 import org.jfree.data.function.LineFunction2D;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.statistics.Regression;
@@ -33,22 +33,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.IntToDoubleFunction;
 
-public class ShowChart extends JFrame{
+public class ShowChart extends JFrame {
     private ChartPanel chartPanel;
-    private  CandlestickRenderer candlestickRenderer;
-    private  DateAxis domainAxis;
-    private  NumberAxis rangeAxis;
+    private CandlestickRenderer candlestickRenderer;
+    private DateAxis domainAxis;
+    private NumberAxis rangeAxis;
 
     public JPanel getChart(String symbol, String title,
-                     List<StockTrendInfo> stockTrends,
-                     CandleChartsEnum chartName,
-                     int slopDaysDifferenceWithCurrentDate,
-                     boolean logChart,
-                     boolean includeCurrentDayInSlopCalculation){
+                           List<StockTrendInfo> stockTrends,
+                           CandleChartsEnum chartName,
+                           int slopDaysDifferenceWithCurrentDate,
+                           boolean logChart,
+                           boolean includeCurrentDayInSlopCalculation) {
 
         domainAxis = new DateAxis();
         rangeAxis = new NumberAxis();
-      //  rangeAxis.setStandardTickUnits(NumberAxis.createStandardTickUnits());
+        //  rangeAxis.setStandardTickUnits(NumberAxis.createStandardTickUnits());
         rangeAxis.setAutoRangeIncludesZero(false);
 
 
@@ -57,7 +57,7 @@ public class ShowChart extends JFrame{
         candlestickRenderer = new CandlestickRenderer();
         candlestickRenderer.setSeriesStroke(0, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
         candlestickRenderer.setSeriesPaint(0, Color.black);
-        Color c2 = new Color(0,255,128);
+        Color c2 = new Color(0, 255, 128);
         candlestickRenderer.setVolumePaint(c2);
         candlestickRenderer.setDrawVolume(true);
 
@@ -65,7 +65,7 @@ public class ShowChart extends JFrame{
         Stroke lineStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
 
-        XYItemRenderer[] topLinesRenderers = Arrays.stream(new Color[]{Color.DARK_GRAY, Color.MAGENTA,Color.DARK_GRAY }).map(color -> {
+        XYItemRenderer[] topLinesRenderers = Arrays.stream(new Color[]{Color.DARK_GRAY, Color.MAGENTA, Color.DARK_GRAY}).map(color -> {
             XYItemRenderer r = new SamplingXYLineRenderer();
             r.setSeriesPaint(0, color);
             r.setSeriesStroke(0, lineStroke);
@@ -73,14 +73,12 @@ public class ShowChart extends JFrame{
         }).toArray(XYItemRenderer[]::new);
 
 
-
-        XYItemRenderer[] bottomLinesRenderers = Arrays.stream(new Color[]{Color.BLUE, Color.CYAN,Color.BLUE}).map(color -> {
+        XYItemRenderer[] bottomLinesRenderers = Arrays.stream(new Color[]{Color.BLUE, Color.CYAN, Color.BLUE}).map(color -> {
             XYItemRenderer r = new SamplingXYLineRenderer();
             r.setSeriesPaint(0, color);
             r.setSeriesStroke(0, lineStroke);
             return r;
         }).toArray(XYItemRenderer[]::new);
-
 
 
         XYItemRenderer lineRenderer = new SamplingXYLineRenderer();
@@ -90,95 +88,91 @@ public class ShowChart extends JFrame{
 
         Font font = new Font(null, Font.PLAIN, 14);
         Map.Entry<Stock, java.util.List<OHLCDataItem>> entry;
-            try {
-                entry = Utils.loadFromFile(symbol);
-            } catch (IOException e) {
-                throw new Error("Error occurred while loading data", e);
-            }
-            Stock stock = entry.getKey();
-            java.util.List<OHLCDataItem> data = entry.getValue();
+        try {
+            entry = Utils.loadFromFile(symbol);
+        } catch (IOException e) {
+            throw new Error("Error occurred while loading data", e);
+        }
+        Stock stock = entry.getKey();
+        java.util.List<OHLCDataItem> data = entry.getValue();
 
 
-            OHLCDataset dataset = createDataset(data);
-            JFreeChart jFreeChart = createChart(dataset, stock, font);
+        OHLCDataset dataset = createDataset(data);
+        JFreeChart jFreeChart = createChart(dataset, stock, font);
 
-            chartPanel = new ChartPanel(jFreeChart);
-            chartPanel.setMouseWheelEnabled(true);
-            chartPanel.setMouseZoomable(true, true);
-            chartPanel.setDomainZoomable(true);
-            chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-            chartPanel.setBackground(Color.ORANGE);
-            chartPanel.setZoomAroundAnchor(true);
-
-
-            XYPlot xyplot = jFreeChart.getXYPlot();
-            jFreeChart.getXYPlot().setRangeAxisLocation(AxisLocation.TOP_OR_RIGHT);
-            //((DateAxis) xyplot.getDomainAxis()).setTimeline(SegmentedTimeline.newMondayThroughFridayTimeline());
+        chartPanel = new ChartPanel(jFreeChart);
+        chartPanel.setMouseWheelEnabled(true);
+        chartPanel.setMouseZoomable(true, true);
+        chartPanel.setDomainZoomable(true);
+        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chartPanel.setBackground(Color.ORANGE);
+        chartPanel.setZoomAroundAnchor(true);
 
 
-            if (logChart) {
-                LogarithmicAxis yAxis = new LogarithmicAxis("Y");
-                yAxis.setAutoRangeIncludesZero(false);
-                yAxis.setAutoTickUnitSelection(true);
-                yAxis.setAllowNegativesFlag(true);
-                yAxis.setStrictValuesFlag(true);
-
-                xyplot.setRangeAxis(yAxis);
-                //xyplot.setDomainMinorGridlinePaint(Color.YELLOW);
+        XYPlot xyplot = jFreeChart.getXYPlot();
+        jFreeChart.getXYPlot().setRangeAxisLocation(AxisLocation.TOP_OR_RIGHT);
+        //((DateAxis) xyplot.getDomainAxis()).setTimeline(SegmentedTimeline.newMondayThroughFridayTimeline());
 
 
-            }
+        if (logChart) {
+            LogarithmicAxis yAxis = new LogarithmicAxis("Y");
+            yAxis.setAutoRangeIncludesZero(false);
+            yAxis.setAutoTickUnitSelection(true);
+            yAxis.setAllowNegativesFlag(true);
+            yAxis.setStrictValuesFlag(true);
 
-            /* Draw 49-day moving average Line */
+            xyplot.setRangeAxis(yAxis);
+            //xyplot.setDomainMinorGridlinePaint(Color.YELLOW);
+        }
 
-            TimeSeries timeSeries = new TimeSeries("54-day moving average");
-            for (OHLCDataItem item : entry.getValue()) {
-                timeSeries.add(new Day(item.getDate()), item.getClose());
-            }
+        /* Draw 49-day moving average Line */
 
-            TimeSeries movingAverage = MovingAverage.createMovingAverage(timeSeries, "LT", 30, 30);
-            TimeSeriesCollection movingAverageDataset = new TimeSeriesCollection();
-            movingAverageDataset.addSeries(movingAverage);
+        TimeSeries timeSeries = new TimeSeries("54-day moving average");
+        for (OHLCDataItem item : entry.getValue()) {
+            timeSeries.add(new Day(item.getDate()), item.getClose());
+        }
 
-
-       // Regression.getOLSRegression();
-       // Regression.getPowerRegression()
-
-
+        TimeSeries movingAverage = MovingAverage.createMovingAverage(timeSeries, "LT", 30, 30);
+        TimeSeriesCollection movingAverageDataset = new TimeSeriesCollection();
+        movingAverageDataset.addSeries(movingAverage);
 
 
-            xyplot.setDataset(2, movingAverageDataset);
-            xyplot.setRenderer(2, lineRenderer);
+        // Regression.getOLSRegression();
+        // Regression.getPowerRegression()
 
-            /* Draw Fitted Regression (Trend) Line */
-            double lowerBound = xyplot.getDomainAxis().getRange().getLowerBound();
-            double upperBound = xyplot.getDomainAxis().getRange().getUpperBound();
-            double[] regressionParameters = Regression.getOLSRegression(dataset, 0);
 
-            LineFunction2D linefunction2d = new LineFunction2D(regressionParameters[0], regressionParameters[1]);
-            XYDataset regressionDataset = DatasetUtilities.sampleFunction2D(linefunction2d, lowerBound, upperBound,2, "Fitted Regression Line");
-            xyplot.setDataset(3, regressionDataset);
-            xyplot.setRenderer(3, lineRenderer);
+        xyplot.setDataset(2, movingAverageDataset);
+        xyplot.setRenderer(2, lineRenderer);
 
-            int dataSize = data.size();
-            IntToDoubleFunction x = i -> data.get(i).getDate().getTime();
+        /* Draw Fitted Regression (Trend) Line */
+        double lowerBound = xyplot.getDomainAxis().getRange().getLowerBound();
+        double upperBound = xyplot.getDomainAxis().getRange().getUpperBound();
+        double[] regressionParameters = Regression.getOLSRegression(dataset, 0);
+
+        LineFunction2D linefunction2d = new LineFunction2D(regressionParameters[0], regressionParameters[1]);
+        XYDataset regressionDataset = DatasetUtilities.sampleFunction2D(linefunction2d, lowerBound, upperBound, 2, "Fitted Regression Line");
+        xyplot.setDataset(3, regressionDataset);
+        xyplot.setRenderer(3, lineRenderer);
+
+        int dataSize = data.size();
+        IntToDoubleFunction x = i -> data.get(i).getDate().getTime();
 //            String annotationSuffix = stock.getCurrency() + "/Day";
-            String annotationSuffix = "(%/Day)";
+        String annotationSuffix = "(%/Day)";
 
-            int l = 4;
-            /* Draw lines between two high points */
-            {
-                IntToDoubleFunction y = i -> data.get(i).getHigh().doubleValue();
+        int l = 4;
+        /* Draw lines between two high points */
+        {
+            IntToDoubleFunction y = i -> data.get(i).getHigh().doubleValue();
 
-                l += OHLCCandleStickTrendUtil.drawLinearBounds(x,y,dataSize,l,topLinesRenderers,Comparator.naturalOrder(),xyplot,annotationSuffix,font,includeCurrentDayInSlopCalculation, data);
-            }
+            l += OHLCCandleStickTrendUtil.drawLinearBounds(x, y, dataSize, l, topLinesRenderers, Comparator.naturalOrder(), xyplot, annotationSuffix, font, includeCurrentDayInSlopCalculation, data);
+        }
 
-            /* Draw lines between two low points */
-            {
-                IntToDoubleFunction y = i -> data.get(i).getLow().doubleValue();
+        /* Draw lines between two low points */
+        {
+            IntToDoubleFunction y = i -> data.get(i).getLow().doubleValue();
 
-                l += OHLCCandleStickTrendUtil.drawLinearBounds(x, y, dataSize, l, bottomLinesRenderers, Comparator.reverseOrder(), xyplot,annotationSuffix, font, includeCurrentDayInSlopCalculation, data);
-            }
+            l += OHLCCandleStickTrendUtil.drawLinearBounds(x, y, dataSize, l, bottomLinesRenderers, Comparator.reverseOrder(), xyplot, annotationSuffix, font, includeCurrentDayInSlopCalculation, data);
+        }
 
         mainPanel.add(chartPanel, BorderLayout.CENTER);
 
@@ -231,37 +225,46 @@ public class ShowChart extends JFrame{
     }
 
 
-    private static void stockNews(){}
+    private static void stockNews() {
+    }
 
 
-    protected static IntervalXYDataset getVolumeDataset(final OHLCDataset priceDataset, final long barWidthInMilliseconds){
-        return new AbstractIntervalXYDataset(){
+    protected static IntervalXYDataset getVolumeDataset(final OHLCDataset priceDataset, final long barWidthInMilliseconds) {
+        return new AbstractIntervalXYDataset() {
             public int getSeriesCount() {
                 return priceDataset.getSeriesCount();
             }
+
             public Comparable getSeriesKey(int series) {
                 return priceDataset.getSeriesKey(series) + "-Volume";
             }
+
             public int getItemCount(int series) {
                 return priceDataset.getItemCount(series);
             }
+
             public Number getX(int series, int item) {
                 return priceDataset.getX(series, item);
             }
+
             public Number getY(int series, int item) {
-                return priceDataset.getVolume(series,  item);
+                return priceDataset.getVolume(series, item);
             }
+
             public Number getStartX(int series, int item) {
-                return priceDataset.getX(series, item).doubleValue() - barWidthInMilliseconds/2;
+                return priceDataset.getX(series, item).doubleValue() - barWidthInMilliseconds / 2;
             }
+
             public Number getEndX(int series, int item) {
-                return priceDataset.getX(series, item).doubleValue() + barWidthInMilliseconds/2;
+                return priceDataset.getX(series, item).doubleValue() + barWidthInMilliseconds / 2;
             }
+
             public Number getStartY(int series, int item) {
                 return new Double(0.0);
             }
+
             public Number getEndY(int series, int item) {
-                return priceDataset.getVolume(series,  item);
+                return priceDataset.getVolume(series, item);
             }
         };
     }

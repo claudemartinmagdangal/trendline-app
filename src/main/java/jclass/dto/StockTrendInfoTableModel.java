@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StockTrendInfoTableModel  extends AbstractTableModel {
+public class StockTrendInfoTableModel extends AbstractTableModel {
 
     private static String[] columnNames = {
             "ID",
@@ -27,25 +27,26 @@ public class StockTrendInfoTableModel  extends AbstractTableModel {
             "Volume/30",
             "Insider Trading",
             "Price",
-            "News Story"};
+            "News Story"
+    };
 
-    private  List<String> list;
-    private  Map<String, Integer> mlist;
-    private  Boolean isMovedColumn=false;
+    private List<String> list;
+    private Map<String, Integer> mlist;
+    private Boolean isMovedColumn = false;
 
-     {
-        list= FileUtils.readFile();
-        mlist=new HashMap<>();
-        if(list.size()>0){
+    {
+        list = FileUtils.readFile();
+        mlist = new HashMap<>();
+        if (list.size() > 0) {
 
             //System.out.println(list.size());
 
-            for (int i=0;i<list.size();i++){
-                columnNames[i]=list.get(i);
-                mlist.put(list.get(i),i);
+            for (int i = 0; i < list.size(); i++) {
+                columnNames[i] = list.get(i);
+                mlist.put(list.get(i), i);
                 //System.out.println(i +" : "+ list.get(i));
             }
-            isMovedColumn=true;
+            isMovedColumn = true;
         }
 //        else{
 //            System.out.println("empty list ::::");
@@ -71,66 +72,66 @@ public class StockTrendInfoTableModel  extends AbstractTableModel {
         StockTrendInfo stockTrendInfo = listStockTrendInfo.get(rowIndex);
         Object returnValue = null;
 
-        Long  upwardTrendDistances=0l;
-        if(!stockTrendInfo.getUpwardTrendDistances().isEmpty())
-         upwardTrendDistances =stockTrendInfo.getUpwardTrendDistances().get(stockTrendInfo.getUpwardTrendDistances().size()-1);
+        Long upwardTrendDistances = 0l;
+        if (!stockTrendInfo.getUpwardTrendDistances().isEmpty())
+            upwardTrendDistances = stockTrendInfo.getUpwardTrendDistances().get(stockTrendInfo.getUpwardTrendDistances().size() - 1);
 
 
-        Double  UpwardTrendDistanceSlopInPercentage=0.0;
-        if(!stockTrendInfo.getUpwardTrendDistanceSlopInPercentage().isEmpty())
-         UpwardTrendDistanceSlopInPercentage =  stockTrendInfo.getUpwardTrendDistanceSlopInPercentage().get(stockTrendInfo.getUpwardTrendDistanceSlopInPercentage().size()-1);
+        Double UpwardTrendDistanceSlopInPercentage = 0.0;
+        if (!stockTrendInfo.getUpwardTrendDistanceSlopInPercentage().isEmpty())
+            UpwardTrendDistanceSlopInPercentage = stockTrendInfo.getUpwardTrendDistanceSlopInPercentage().get(stockTrendInfo.getUpwardTrendDistanceSlopInPercentage().size() - 1);
 
-        Long  DownwardTrendDistances =0l;
-        if(!stockTrendInfo.getDownwardTrendDistances().isEmpty())
-          DownwardTrendDistances = stockTrendInfo.getDownwardTrendDistances().get(stockTrendInfo.getDownwardTrendDistances().size()-1);
+        Long DownwardTrendDistances = 0l;
+        if (!stockTrendInfo.getDownwardTrendDistances().isEmpty())
+            DownwardTrendDistances = stockTrendInfo.getDownwardTrendDistances().get(stockTrendInfo.getDownwardTrendDistances().size() - 1);
 
-        Double  DownwardTrendDistanceSlopInPercentage=0.0;
-        if(!stockTrendInfo.getDownwardTrendDistanceSlopInPercentage().isEmpty())
-             DownwardTrendDistanceSlopInPercentage = stockTrendInfo.getDownwardTrendDistanceSlopInPercentage().get(stockTrendInfo.getDownwardTrendDistanceSlopInPercentage().size()-1);
+        Double DownwardTrendDistanceSlopInPercentage = 0.0;
+        if (!stockTrendInfo.getDownwardTrendDistanceSlopInPercentage().isEmpty())
+            DownwardTrendDistanceSlopInPercentage = stockTrendInfo.getDownwardTrendDistanceSlopInPercentage().get(stockTrendInfo.getDownwardTrendDistanceSlopInPercentage().size() - 1);
 
-        if(isMovedColumn){
-            String  columnName =list.get(columnIndex);
-            if(columnName.equals("ID"))
+        if (isMovedColumn) {
+            String columnName = list.get(columnIndex);
+            if (columnName.equals("ID"))
                 returnValue = stockTrendInfo.getIndex();
-            else if(columnName.equals("Symbol"))
+            else if (columnName.equals("Symbol"))
                 returnValue = stockTrendInfo.getSymbol();
-            else if(columnName.equals("Company"))
+            else if (columnName.equals("Company"))
                 returnValue = stockTrendInfo.getCompany();
-            else if(columnName.equals("Industry"))
+            else if (columnName.equals("Industry"))
                 returnValue = stockTrendInfo.getIndustry();
-            else if(columnName.equals("%ChangeUpTrend"))
+            else if (columnName.equals("%ChangeUpTrend"))
                 returnValue = stockTrendInfo.getMaxPercentageChangeUpwardTrend();
-            else if(columnName.equals("%ChangeDownTrend"))
+            else if (columnName.equals("%ChangeDownTrend"))
                 returnValue = stockTrendInfo.getMaxPercentageChangeDownWardTrend();
-            else if(columnName.equals("UpTrendCount"))
+            else if (columnName.equals("UpTrendCount"))
                 returnValue = stockTrendInfo.getMaxUpwardTrendCount();
-            else if(columnName.equals("DownTrendCount"))
+            else if (columnName.equals("DownTrendCount"))
                 returnValue = stockTrendInfo.getMaxDownwardTrendCount();
-            else if(columnName.equals("UpTrendDistances"))
+            else if (columnName.equals("UpTrendDistances"))
                 returnValue = upwardTrendDistances;
-            else if(columnName.equals("Up%SlopeTrendDistance"))
+            else if (columnName.equals("Up%SlopeTrendDistance"))
                 returnValue = UpwardTrendDistanceSlopInPercentage;
-            else if(columnName.equals("TotalUpTrendDistance"))
+            else if (columnName.equals("TotalUpTrendDistance"))
                 returnValue = stockTrendInfo.getTotalUpwardTrendDistance();
-            else if(columnName.equals("DownTrendDistances"))
+            else if (columnName.equals("DownTrendDistances"))
                 returnValue = DownwardTrendDistances;
-            else if(columnName.equals("Down%SlopeTrendDistance"))
+            else if (columnName.equals("Down%SlopeTrendDistance"))
                 returnValue = DownwardTrendDistanceSlopInPercentage;
-            else if(columnName.equals("TotalDownTrendDistance"))
+            else if (columnName.equals("TotalDownTrendDistance"))
                 returnValue = stockTrendInfo.getTotalDownwardTrendDistance();
-            else if(columnName.equals("Volume/30"))
+            else if (columnName.equals("Volume/30"))
                 returnValue = stockTrendInfo.getVolumn();
-            else if(columnName.equals("Insider Trading"))
+            else if (columnName.equals("Insider Trading"))
                 returnValue = stockTrendInfo.getInsidertrading();
-            else if(columnName.equals("Price"))
+            else if (columnName.equals("Price"))
                 returnValue = stockTrendInfo.getPrice();
-            else if(columnName.equals("News Story"))
+            else if (columnName.equals("News Story"))
                 returnValue = stockTrendInfo.getNewsstory();
             else
                 throw new IllegalArgumentException("Invalid column index");
 
 
-        }else{
+        } else {
             switch (columnIndex) {
                 case 0:
                     returnValue = stockTrendInfo.getIndex();
@@ -203,6 +204,7 @@ public class StockTrendInfoTableModel  extends AbstractTableModel {
     public int getColumnCount() {
         return columnNames.length;
     }
+
     @Override
     public String getColumnName(int columnIndex) {
         return columnNames[columnIndex];
@@ -219,30 +221,30 @@ public class StockTrendInfoTableModel  extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         StockTrendInfo stockTrendInfo = listStockTrendInfo.get(rowIndex);
-        if (list.get(columnIndex)== "ID") {
+        if (list.get(columnIndex) == "ID") {
             stockTrendInfo.setIndex((int) value);
         }
     }
 
-    public static String[] getColumnNames(){
+    public static String[] getColumnNames() {
         return columnNames;
     }
 
 
-    private void loadTable(){
-            list= FileUtils.readFile();
-            mlist=new HashMap<>();
-            if(list.size()>0){
+    private void loadTable() {
+        list = FileUtils.readFile();
+        mlist = new HashMap<>();
+        if (list.size() > 0) {
 
-                //System.out.println(list.size());
+            //System.out.println(list.size());
 
-                for (int i=0;i<list.size();i++){
-                    columnNames[i]=list.get(i);
-                    mlist.put(list.get(i),i);
-                    //System.out.println(i +" : "+ list.get(i));
-                }
-                isMovedColumn=true;
+            for (int i = 0; i < list.size(); i++) {
+                columnNames[i] = list.get(i);
+                mlist.put(list.get(i), i);
+                //System.out.println(i +" : "+ list.get(i));
             }
+            isMovedColumn = true;
+        }
 //            else{
 //                System.out.println("empty list");
 //                System.out.println(list);

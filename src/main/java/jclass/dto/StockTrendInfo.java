@@ -33,7 +33,7 @@ public class StockTrendInfo implements Serializable {
     private double volumn;
 
     private int insidertrading;
-    private int price;
+    private double price;
     private int newsstory;
     private HashMap<Long, Integer> daySlopIndexForSort;
 

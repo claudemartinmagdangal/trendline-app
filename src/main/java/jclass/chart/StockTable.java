@@ -97,16 +97,18 @@ public class StockTable {
         pan.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        List<String> hlist = ReadExcel.headList();
+        List<String> industryList = ReadExcel.headList();
         JCheckBox checkSelectAll = new JCheckBox("Select All");
         cb.add(checkSelectAll);
         box.add(checkSelectAll);
 
-        for (int i = 0; i < hlist.size(); i++) {
-            JCheckBox checkBox = new JCheckBox(hlist.get(i));
+        /**
+         * This part is the checklist of different Industries are generated for searching
+         */
+        for (int i = 0; i < industryList.size(); i++) {
+            JCheckBox checkBox = new JCheckBox(industryList.get(i));
             cb.add(checkBox);
             box.add(checkBox);
-
         }
 
         spHead = new JScrollPane(box);
@@ -376,6 +378,8 @@ public class StockTable {
 
     public void getDataList() {
         stockInfo = OHLCCandleStickTrendUtil.calculateTrendsInfo(true);
+        System.out.println("stockInfo: " + stockInfo);
+        System.out.println("stockInfo: " + stockInfo.get(0).toString());
         //stockInfo.sort(new StockTrendInfo.SortByMaxUpwardTrendCount());
     }
 

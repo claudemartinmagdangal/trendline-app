@@ -31,7 +31,8 @@ public class ReadExcel {
                     String symbol = row.getCell(0).getStringCellValue();
                     String company = row.getCell(1).getStringCellValue();
                     String industry = row.getCell(2).getStringCellValue();
-                    set.add(new Symbol(symbol, company, industry));
+                    //set.add(new Symbol(symbol, company, industry));
+                    list.add(new Symbol(symbol, company, industry));
                 }
             }
             file.close();
@@ -46,15 +47,15 @@ public class ReadExcel {
 
     public static List<String> headList() {
 
-        Set<String> inList = new HashSet<>();
-        for (Symbol s : readExcel())
-            inList.add(s.getIndustry());
+        Set<String> set = new HashSet<>();
+        for (Symbol symbol : readExcel())
+            set.add(symbol.getIndustry());
 
-        List<String> ainList = new ArrayList<>(inList);
-        Collections.sort(ainList);
+        List<String> industryList = new ArrayList<>(set);
+        Collections.sort(industryList);
 
-        //System.out.println(ainList);
-        return ainList;
+        //System.out.println(industryList);
+        return industryList;
     }
 
 

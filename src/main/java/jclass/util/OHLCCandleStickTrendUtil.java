@@ -166,6 +166,7 @@ public class OHLCCandleStickTrendUtil {
                     StockTrendInfo stockTrendInfo = new StockTrendInfo(symbol.getSymbol().trim());
                     stockTrendInfo.setCompany(symbol.getCompanyName());
                     stockTrendInfo.setIndustry(symbol.getIndustry());
+                    stockTrendInfo.setPrice((double) ohlcDataItemList.get(ohlcDataItemList.size() - 1).getClose()); //code enhancement to put stock price in the table
 
                     /* Draw lines between two high points */
                     {
@@ -179,7 +180,7 @@ public class OHLCCandleStickTrendUtil {
                         calculateAndSetTrendInfo(x, y, dataSize, Comparator.reverseOrder(), stockTrendInfo, true, includeCurrentDayInSlopCalculation, ohlcDataItemList);
                     }
 
-                    volumnPercentage(symbol.getSymbol().trim(), ohlcDataItemList, stockTrendInfo);
+                    volumnPercentage(symbol.getSymbol().trim(), ohlcDataItemList, stockTrendInfo); //setting of open, high, low, close values
 
                     allStockTrends.add(stockTrendInfo);
                 }

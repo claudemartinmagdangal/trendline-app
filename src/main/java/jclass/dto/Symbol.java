@@ -20,11 +20,9 @@ public class Symbol {
     }
 
 
-
     public String getSymbol() {
         return symbol;
     }
-
 
 
     public void setSymbol(String symbol) {
@@ -32,11 +30,9 @@ public class Symbol {
     }
 
 
-
     public String getCompanyName() {
         return companyName;
     }
-
 
 
     public void setCompanyName(String companyName) {
@@ -44,11 +40,9 @@ public class Symbol {
     }
 
 
-
     public String getIndustry() {
         return industry;
     }
-
 
 
     public void setIndustry(String industry) {
@@ -69,37 +63,24 @@ public class Symbol {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Symbol other = (Symbol) obj;
         if (companyName == null) {
-            if (other.companyName != null)
-                return false;
-        } else if (!companyName.equals(other.companyName))
-            return false;
+            if (other.companyName != null) return false;
+        } else if (!companyName.equals(other.companyName)) return false;
         if (industry == null) {
-            if (other.industry != null)
-                return false;
-        } else if (!industry.equals(other.industry))
-            return false;
+            if (other.industry != null) return false;
+        } else if (!industry.equals(other.industry)) return false;
         if (symbol == null) {
-            if (other.symbol != null)
-                return false;
-        } else if (!symbol.equals(other.symbol))
-            return false;
+            if (other.symbol != null) return false;
+        } else if (!symbol.equals(other.symbol)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Symbol{" +
-                "symbol='" + symbol + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", industry='" + industry + '\'' +
-                '}';
+        return "Symbol{" + "symbol='" + symbol + '\'' + ", companyName='" + companyName + '\'' + ", industry='" + industry + '\'' + '}';
     }
 }

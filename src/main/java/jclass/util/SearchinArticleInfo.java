@@ -3,24 +3,23 @@ package jclass.util;
 import jclass.dto.StockTrendInfo;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 
 public class SearchinArticleInfo {
-    public static void main(String[] args) throws IOException {
-//
-//        String url = "https://finance.yahoo.com/quote/TSLA/";
-//        Document doc = Jsoup.connect(url).get();
-//        Element link = doc.select("td.Ta(end) Fw(600) Lh(14px)").first();
-//
-//        System.out.println(link.text());
+    /*public static void main(String[] args) throws IOException {
+
+        String url = "https://finance.yahoo.com/quote/TSLA/";
+        Document doc = Jsoup.connect(url).get();
+        Element link = doc.select("td.Ta(end) Fw(600) Lh(14px)").first();
+
+        System.out.println(link.text());
 
         writeFile1();
         readFile1();
-    }
+    }*/
 
     public static void readFile1() throws IOException {
         try {
@@ -41,6 +40,7 @@ public class SearchinArticleInfo {
             e.printStackTrace();
         }
     }
+
     public static void writeFile1() throws IOException {
         File fout = new File("RowMoved.txt");
         FileOutputStream fos = new FileOutputStream(fout);
@@ -55,7 +55,7 @@ public class SearchinArticleInfo {
         bw.close();
     }
 
-    public static List<StockTrendInfo> removeDuplicates(List<StockTrendInfo> list){
+    public static List<StockTrendInfo> removeDuplicates(List<StockTrendInfo> list) {
 
         // Create a new LinkedHashSet
         Set<StockTrendInfo> set = new LinkedHashSet<>();
